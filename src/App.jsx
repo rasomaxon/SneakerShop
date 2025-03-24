@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import Card from "./components/Card";
 import Header from "./components/Header.js";
 import Drawer from "./components/Drawer.js";
@@ -19,39 +18,6 @@ const arr = [
 ];
 
 function App() {
-  // Состояние для хранения фильтра и результата фильтрации
-  const [filter, setFilter] = useState("");
-  const [filteredArr, setFilteredArr] = useState(arr);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  // Фильтрация массива при изменении фильтра
-  useEffect(() => {
-    let sortedArr = [...arr];
-
-    switch (filter) {
-      case "priceDown":
-        sortedArr.sort((a, b) => b.price - a.price);
-        break;
-      case "priceUp":
-        sortedArr.sort((a, b) => a.price - b.price);
-        break;
-      case "sneakerType":
-        sortedArr.sort((a, b) => a.typeSneaker.localeCompare(b.typeSneaker));
-        break;
-      default:
-        sortedArr = arr;
-    }
-
-    // Фильтр по поиску
-    if (searchQuery) {
-      sortedArr = sortedArr.filter((item) =>
-        item.title.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    setFilteredArr(sortedArr);
-  }, [filter, searchQuery]);
-
   return (
     <div className="wrapper clear">
       <Drawer />
@@ -59,44 +25,19 @@ function App() {
       <div className="content">
         <div className="d-flex align-center justify-between mb-40">
           <h1>Все кроссовки</h1>
-
-          {/* Форма для фильтра */}
-          <form className="customSelect">
-            <select
-              className="fieldFilter"
-              name="filter"
-              id="filter-select"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-            >
-              <option value="">Все</option>
-              <option value="priceDown">Цена по убыванию</option>
-              <option value="priceUp">Цена по возрастанию</option>
-              <option value="sneakerType">Тип кроссовок</option>
-            </select>
-          </form>
-
-          {/* Поле для поиска */}
-          <div className="searchBlock">
-            <img src="/img/search.svg" alt="searchIcon" />
-            <input
-              type="text"
-              placeholder="Поиск..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
         </div>
-
-        {/* Карточки с кроссовками */}
+   
         <div className="sneakers">
-          {filteredArr.map((obj, index) => (
-            <Card key={index} title={obj.title} price={obj.price} imgUrl={obj.imgUrl} typeSneaker = {obj.typeSneaker} />
+          {arr.map((obj) => (
+            <Card 
+							title={obj.title} 
+							price={obj.price} 
+							imgUrl={obj.imgUrl} 
+							onClick={()  => console.log(obj)} 
+						/>
           ))}
         </div>
       </div>
-    </div>
+		</div>
   );
-}
-
-export default App;
+}export default App;

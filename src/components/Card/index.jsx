@@ -12,7 +12,6 @@ const onClickButton = () => {
 		</div>
 		<img width={133} height={112} src={props.imgUrl} alt="" />
 		<h5>{props.title}</h5>
-		<span className={styles.typeSneaker}>{props.typeSneaker}</span>
 		<div className={styles.cardBottom}>
 			<div className='price'>
 				<span>Цена:</span>

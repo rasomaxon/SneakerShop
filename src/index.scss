@@ -184,60 +184,6 @@ header {
 	padding: 40px;
 }
 
-.customSelect {
-	position: relative;
-	width: 300px;
-}
-
-.fieldFilter {
-	width: 100%;
-	padding: 10px 40px;
-	font-size: 16px;
-	border: 1px solid #ddd;
-	border-radius: 25px;
-	outline: none;
-	background-color: #fff;
-	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	cursor: pointer;
-	transition: 0.3s;
-}
-
-.customSelect::before {
-	content: '☰';
-	position: absolute;
-	left: 12px;
-	top: 50%;
-	transform: translateY(-50%);
-	font-size: 18px;
-	color: #ccc;
-}
-
-.fieldFilter:hover {
-	border-color: #aaa;
-}
-
-.fieldFilter:focus {
-	border-color: #007bff;
-	box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-}
-
-.fieldFilter::-ms-expand {
-	display: none;
-}
-
-.customSelect::after {
-	content: '▼';
-	position: absolute;
-	right: 12px;
-	top: 50%;
-	transform: translateY(-50%);
-	font-size: 14px;
-	color: #aaa;
-	pointer-events: none;
-}
-
 .searchBlock {
 	border: 1px solid #f3f3f3;
 	border-radius: 10px;
