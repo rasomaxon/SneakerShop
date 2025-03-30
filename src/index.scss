@@ -184,7 +184,7 @@ header {
 	padding: 40px;
 }
 
-.searchBlock {
+.search-block {
 	border: 1px solid #f3f3f3;
 	border-radius: 10px;
 	padding: 0 15px;
@@ -210,8 +210,6 @@ header {
 	flex-direction: column;
 }
 .button {
-	background: #fff;
-	border: none; //1px solid #f2f2f2;
 	display: flex;
 	border-radius: 8px;
 	height: 32px;
@@ -219,5 +217,4 @@ header {
 	cursor: pointer;
 	justify-content: center;
 	align-items: center;
-	background-color: #a3a3a3;
 }
