@@ -46,7 +46,6 @@ header {
 	ul {
 		display: flex;
 		li {
-			margin-right: 30px;
 			opacity: 0.5;
 		}
 	}
@@ -180,8 +179,32 @@ header {
 	}
 }
 
-.content {
-	padding: 40px;
+.cartEmpty {
+	text-align: center;
+
+	p {
+		width: 280px;
+		line-height: 24px;
+	}
+
+	.greenButton {
+		width: 245px;
+		margin-top: 20px;
+
+		&:hover {
+			img {
+				transform: rotate(180deg) translateX(3px);
+			}
+		}
+
+		img {
+			position: relative;
+			top: 1px;
+			transform: rotate(180deg);
+			margin-right: 15px;
+			transition: transform 0.15s ease-in-out;
+		}
+	}
 }
 
 .search-block {
@@ -190,6 +213,15 @@ header {
 	padding: 0 15px;
 	display: flex;
 	align-items: center;
+	position: relative;
+
+	.clear{
+		position: absolute;
+		width: 18px;
+		height: 18px;
+		top: 13px;
+		right: 15px;
+	}
 
 	input {
 		border: 0;

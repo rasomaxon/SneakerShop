@@ -1,54 +1,101 @@
-import React from 'react';
-import Card from "./components/Card";
-import Header from "./components/Header.js";
-import Drawer from "./components/Drawer.js";
+import React from "react";
+import axios from "axios";
+import { Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Drawer from "./components/Drawer";
+import Home from "./pages/Home";
+import Favorites from './pages/Favorites';
 
 function App() {
-	const [items, setItems] = React.useState([]);
-	const [cartItems, setCartItems] = React.useState([]);
-	const [searchValue, setsearchValue] = React.useState('');
-	const [cartOpened, setCartOpened] = React.useState(false);
+  const [items, setItems] = React.useState([]);
+  const [cartItems, setCartItems] = React.useState([]);
+  const [favorites, setFavorites] = React.useState([]);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [cartOpened, setCartOpened] = React.useState(false);
 
-	React.useEffect(() => {
-		fetch ("https://67e2d5ba97fc65f53537cada.mockapi.io/items")
-		.then((res) => {
-			return res.json();
-		})
-		.then((json) => {
-			setItems(json);
-		});
-	}, [])
-	
-	const onAddToCart = (obj) => {
-		setCartItems([...cartItems, obj]);
-	}
+  React.useEffect(() => {
+    axios
+      .get("https://3623f7b0d3e9456f.mokky.dev/items")
+      .then((res) => {
+        setItems(res.data);
+      });
+    axios
+      .get("https://3623f7b0d3e9456f.mokky.dev/cart")
+      .then((res) => {
+        setCartItems(res.data);
+      });
+		axios
+      .get("https://3623f7b0d3e9456f.mokky.dev/favorites")
+      .then((res) => {
+        setFavorites(res.data);
+      });
+  }, []);
+
+  const onAddToCart = async (obj) => {
+		try {
+			const { data } = await axios.post("https://3623f7b0d3e9456f.mokky.dev/cart", obj);
+			setCartItems((prev) => [...prev, data]);
+		} catch (error) {
+			console.error("Ошибка при добавлении в корзину:", error);
+		}
+	};
+
+  const onRemoveItem = async (id) => {
+  try {
+    await axios.delete(`https://3623f7b0d3e9456f.mokky.dev/cart/${id}`);
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+		} catch (error) {
+			console.error("Ошибка при удалении:", error);
+		}
+	};
+
+  const onAddToFavorite = async (obj) => {
+		try {if (favorites.find((favObj) => favObj.id === obj.id)) {
+			axios.delete(`https://3623f7b0d3e9456f.mokky.dev/favorites/${obj.id}`);
+		
+		} else {
+			const { data } = await axios.post("https://3623f7b0d3e9456f.mokky.dev/favorites", obj);
+    	setFavorites((prev) => [...prev, data]);
+		}}
+		catch {
+			alert('Не удалось добавить в избранное')
+		}
+  };
+
+  const onChangeSearchInput = (event) => {
+    setSearchValue(event.target.value);
+  };
 
   return (
-		<div className="wrapper clear">
-      {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)}/>}
-      <Header onClickCart = {() => setCartOpened(true)} />
-      <div className="content">
-        <div className="d-flex align-center justify-between mb-40">
-          <h1>Все кроссовки</h1>
-					<div className="search-block d-flex">
-						<img src="/img/search.svg" alt="iconSearch" />
-						<input placeholder='Поиск...' />
-					</div>
-        </div>
-   
-        <div className="sneakers">
-          {items.map((item, index) => (
-            <Card 
-							key={index}
-							title={item.title} 
-							price={item.price} 
-							imgUrl={item.imgUrl} 
-							onFavorite={()  => console.log("Добавили в закладки")}
-							onPlus={(obj)  => onAddToCart(item)} 
-						/>
-          ))}
-        </div>
-      </div>
-		</div>
+    <div className="wrapper clear">
+      {cartOpened && (
+        <Drawer
+          items={cartItems}
+          onClose={() => setCartOpened(false)}
+          onRemove={onRemoveItem}
+        />
+      )}
+      <Header onClickCart={() => setCartOpened(true)} />
+
+      <Routes>
+        <Route path="/" element={
+					<Home
+						items={items}
+						searchValue={searchValue}
+						setSearchValue={setSearchValue}
+						onChangeSearchInput={onChangeSearchInput}
+						onAddToFavorite={onAddToFavorite}
+						onAddToCart={onAddToCart}
+					/>
+        } exact/>
+      </Routes>
+
+			<Routes>
+        <Route path="/favorites" element={
+					<Favorites items={favorites} onAddToFavorite={onAddToFavorite}/>
+        } exact/>
+      </Routes>
+    </div>
   );
-}export default App;
+}
+export default App;
